@@ -124,7 +124,6 @@ func getAck(text string) (ackId int, restText string, err error) {
 	if len(text) < 4 {
 		return 0, "", ErrorWrongPacket
 	}
-	text = text[2:]
 
 	pos := strings.IndexByte(text, '[')
 	if pos == -1 {
@@ -190,25 +189,24 @@ func Decode(data string) (*Message, error) {
 	}
 
 	ack, rest, err := getAck(data)
-	m.AckID = ack
-	switch m.Type{
-	case MessageTypeAckResponse, MessageTypeAckRequest:
-		if err != nil {
-			return nil, err
-		}
-		m.Args = rest[1 : len(rest)-1]
-		return m, nil
-	}
-
 	if err != nil {
-		m.Type = MessageTypeEmit
-		rest = data[2:]
+		return nil, err
 	}
 
 	m.EventName, m.Args, err = getMethod(rest)
 	if err != nil {
 		return nil, err
 	}
+
+	m.AckID = ack
+	switch m.Type{
+	case MessageTypeAckResponse, MessageTypeAckRequest:
+		m.Args = rest[0 : len(rest)-1]
+		return m, nil
+	}
+
+	m.Type = MessageTypeEmit
+	rest = data[2:]
 
 	return m, nil
 }

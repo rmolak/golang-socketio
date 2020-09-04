@@ -106,7 +106,7 @@ func (e *event) processIncoming(c *Channel, m *protocol.Message) {
 	case protocol.MessageTypeAckRequest:
 		logging.Log().Debug("event.processIncoming() ack request")
 		f, ok := e.findHandler(m.EventName)
-		if !ok || !f.out {
+		if !ok  {
 			return
 		}
 
@@ -127,6 +127,10 @@ func (e *event) processIncoming(c *Channel, m *protocol.Message) {
 			AckID: m.AckID,
 		}
 
+		if !f.out {
+			c.send(ackResponse, nil)
+			return
+		}
 		c.send(ackResponse, result[0].Interface())
 
 	case protocol.MessageTypeAckResponse:
