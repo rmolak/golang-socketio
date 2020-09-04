@@ -5,9 +5,9 @@ import (
 	"log"
 	"time"
 
-	"github.com/mtfelian/golang-socketio"
-	"github.com/mtfelian/golang-socketio/examples/model"
-	"github.com/mtfelian/golang-socketio/transport"
+	"github.com/rmolak/golang-socketio"
+	"github.com/rmolak/golang-socketio/examples/model"
+	"github.com/rmolak/golang-socketio/transport"
 )
 
 const (
