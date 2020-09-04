@@ -1,4 +1,4 @@
-module github.com/mtfelian/golang-socketio
+module github.com/rmolak/golang-socketio
 
 go 1.12
 
