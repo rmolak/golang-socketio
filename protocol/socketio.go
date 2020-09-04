@@ -191,7 +191,8 @@ func Decode(data string) (*Message, error) {
 
 	ack, rest, err := getAck(data)
 	m.AckID = ack
-	if m.Type == MessageTypeAckResponse {
+	switch m.Type{
+	case MessageTypeAckResponse, MessageTypeAckRequest:
 		if err != nil {
 			return nil, err
 		}
